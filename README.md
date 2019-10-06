@@ -23,7 +23,7 @@ The current value of a single Counter in a CounterVec can be asserted. Asserting
 counter := prometheus.NewCounterVec(prometheus.CounterOpts{...}, []string{"hero", "villain"})
 counter.WithLabelValues("batman", "joker").Add(10)
 
-metrictest.AssertCounter(t, 10, counter, "batman", "joker")
+metrictest.AssertCounterVec(t, 10, counter, "batman", "joker")
 ```
 
 ## Histogram/Summary
@@ -47,5 +47,5 @@ histogramVec := prometheus.NewHistogramVec(prometheus.HistogramOpts{...}, []stri
 histogramVec.WithLabelValues("a-label", "another-label").Observe(10)
 histogramVec.WithLabelValues("a-label", "another-label").Observe(20)
 
-metrictest.AssertHistogramSamples(t, 2, 30, histogram, "a-label", "another-label")
+metrictest.AssertHistogramVecSamples(t, 2, 30, histogram, "a-label", "another-label")
 ```

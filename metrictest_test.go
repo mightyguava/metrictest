@@ -89,6 +89,17 @@ test_counter_vec{hero="superman",villain="lex luthor"} 100
 `)
 }
 
+func TestAssertCounterVecZero(t *testing.T) {
+	reset()
+
+	counterVec.WithLabelValues("batman", "joker").Add(2)
+
+	recT := recordingT{}
+	AssertCounterVec(&recT, 0, counterVec, "foo", "bar")
+
+	require.Len(t, recT, 0)
+}
+
 func TestAssertGauge(t *testing.T) {
 	reset()
 
@@ -135,7 +146,18 @@ test_gauge_vec{hero="superman",villain="lex luthor"} 100
 `)
 }
 
-func TestAssertHistogramSampleSum(t *testing.T) {
+func TestAssertGaugeVecZero(t *testing.T) {
+	reset()
+
+	gaugeVec.WithLabelValues("batman", "joker").Add(2)
+
+	recT := recordingT{}
+	AssertGaugeVec(&recT, 0, gaugeVec, "foo", "bar")
+
+	require.Len(t, recT, 0)
+}
+
+func TestAssertHistogramSamples(t *testing.T) {
 	reset()
 
 	histogram.Observe(10)
@@ -164,7 +186,7 @@ actual  : 30
 `)
 }
 
-func TestAssertHistogramVecSampleSum(t *testing.T) {
+func TestAssertHistogramVecSamples(t *testing.T) {
 	reset()
 
 	histogramVec.WithLabelValues("batman", "joker").Observe(10)
@@ -205,7 +227,18 @@ test_histogram_count{hero="superman",villain="lex luthor"} 1
 `)
 }
 
-func TestAssertSummarySampleSum(t *testing.T) {
+func TestAssertHistogramVecSamplesZero(t *testing.T) {
+	reset()
+
+	histogramVec.WithLabelValues("batman", "joker").Observe(10)
+
+	recT := recordingT{}
+	AssertHistogramVecSamples(&recT, 0, 0, histogramVec, "foo", "bar")
+
+	require.Len(t, recT, 0)
+}
+
+func TestAssertSummarySamples(t *testing.T) {
 	reset()
 
 	summary.Observe(10)
@@ -234,7 +267,7 @@ actual  : 30
 `)
 }
 
-func TestAssertSummaryVecSampleSum(t *testing.T) {
+func TestAssertSummaryVecSamples(t *testing.T) {
 	reset()
 
 	summaryVec.WithLabelValues("batman", "joker").Observe(10)
@@ -274,6 +307,17 @@ test_summary_count{hero="batman",villain="joker"} 2
 test_summary_sum{hero="superman",villain="lex luthor"} 10
 test_summary_count{hero="superman",villain="lex luthor"} 1
 `)
+}
+
+func TestAssertSummaryVecSamplesZero(t *testing.T) {
+	reset()
+
+	summaryVec.WithLabelValues("batman", "joker").Observe(10)
+
+	recT := recordingT{}
+	AssertSummaryVecSamples(&recT, 0, 0, summaryVec, "foo", "bar")
+
+	require.Len(t, recT, 0)
 }
 
 func TestToExpVar(t *testing.T) {
