@@ -1,0 +1,27 @@
+run:
+  tests: true
+
+output:
+  print-issued-lines: false
+
+linters:
+  enable-all: true
+  disable:
+    - maligned
+    - lll
+    - gochecknoglobals
+    - dupl
+
+linters-settings:
+  govet:
+    check-shadowing: true
+  gocyclo:
+    min-complexity: 10
+  goconst:
+    min-len: 5
+    min-occurrences: 3
+
+issues:
+  max-per-linter: 0
+  max-same: 0
+  exclude-use-default: false
